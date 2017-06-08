@@ -13,7 +13,7 @@ import zlib
 
 import heapq
 
-from app import options
+from __main__ import options
 
 mc = {}
 
