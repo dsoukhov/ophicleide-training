@@ -13,7 +13,7 @@ import zlib
 
 import heapq
 
-from __main__ import options
+import conf
 
 mc = {}
 
@@ -53,12 +53,12 @@ class LocalW2VModel(object):
 
 
 def model_collection():
-    dburl = options()["db_url"]
+    dburl = conf.options()["db_url"]
     return pymongo.MongoClient(dburl).ophicleide.models
 
 
 def query_collection():
-    dburl = options()["db_url"]
+    dburl = conf.options()["db_url"]
     return pymongo.MongoClient(dburl).ophicleide.queries
 
 
@@ -91,7 +91,7 @@ def create_training_model(trainingModel):
            "name": trainingModel["name"], "status": "training",
            "callback": trainingModel["callback"]}
     (model_collection()).insert_one(job)
-    options()["train_queue"].put(job)
+    conf.options()["train_queue"].put(job)
     location = url_for(".controllers_default_controller_find_training_model",
                   id=job["_id"])
 
@@ -186,6 +186,6 @@ def get_queries():
 
 
 def get_server_info():
-    tqlen = (options()["train_queue"]).qsize()
+    tqlen = (conf.options()["train_queue"]).qsize()
     info = {"training_queue_len": tqlen}
     return jsonify(name="ophicleide", version="0.0.0", info=info)
