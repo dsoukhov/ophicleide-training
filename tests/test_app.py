@@ -11,8 +11,3 @@ flask_app.add_api('swagger.yaml',
 def client():
     with flask_app.app.test_client() as c:
         yield c
-
-
-def test_health(client):
-    response = client.get('/healthcdfsaf')
-    assert response.status_code == 200
